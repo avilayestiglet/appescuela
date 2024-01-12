@@ -3,7 +3,7 @@ import heroImage from '../../assets/images/hero.png';
 import logo from '../../assets/images/logo.png';
 
 
-const LoginComponent = () => {
+const RegisterComponent = () => {
     return (
 <div class="h-screen md:flex">
 	<div
@@ -69,4 +69,4 @@ const LoginComponent = () => {
     );
 };
 
-export default LoginComponent;
+export default RegisterComponent;
