@@ -42,13 +42,13 @@ const InputCustom = ({
 
     return (
         <div className="mb-4">
-            <div className={`flex items-center ${borderColorClass} rounded-2xl py-2 px-3 border-2`}>
+            <div className={`flex items-center ${borderColorClass} border-slate-300 rounded-2xl py-2 px-3 border-2 bg-slate-50`}>
                 <svg xmlns="http://www.w3.org/2000/svg" className={`h-5 w-5 ${iconColorClass}`} fill="none"
                     viewBox={iconSVG.viewBox} stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"
                         d={iconSVG.path} />
                 </svg>
-                <input className="pl-2 outline-none border-none w-full" type={type} name={name} id={id} placeholder={placeholder} onChange={onChanged} />
+                <input className="pl-2 outline-none border-none w-full bg-transparent" type={type} name={name} id={id} placeholder={placeholder} onChange={onChanged} />
             </div>
             {errorMessage}
         </div>
