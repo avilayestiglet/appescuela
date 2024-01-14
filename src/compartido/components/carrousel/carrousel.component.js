@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import ItemCarousel from "./item.carrousel";
+import ofrecemos from "../../../assets/images/ofrecemos.png";
 
 const CarouselComponent = ({ items }) => {
     const [currentIndex, setCurrentIndex] = useState(0);
@@ -19,7 +20,7 @@ const CarouselComponent = ({ items }) => {
         <div className="whitespace-nowrap transition-transform duration-500 ease-linear" style={{ transform: `translateX(-${currentIndex * 100}%)` }}>
           {items.map((item, index) => (
             <div key={index} className="inline-block w-full">
-              <ItemCarousel item={item} />
+              <ItemCarousel key={index} item={item} />
             </div>
           ))}
         </div>

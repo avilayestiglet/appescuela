@@ -1,11 +1,18 @@
-import logo from './logo.svg';
-import './App.css';
-import LoginComponent from './funcionalidad/login/login.component';
+// App.jsx
+import React from 'react';
+import { RouterProvider } from 'react-router-dom';
+import LoaderComponent from './compartido/components/loader/loader.component';
+import { useLoader } from './compartido/services/loader.provider';
 
-function App() {
+const App = ({ router }) => {
+  const { isLoading } = useLoader();
+
   return (
-      <LoginComponent />
+    <>
+      {isLoading && <LoaderComponent />}
+      <RouterProvider router={router} />
+    </>
   );
-}
+};
 
 export default App;

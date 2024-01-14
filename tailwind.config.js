@@ -5,6 +5,15 @@ module.exports = {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        'open-sans': ['Open Sans', 'sans-serif'],
+      },
+      fontWeight: {
+        light: 300,
+        normal: 400,
+        medium: 500,
+        bold: 700,
+      },
       colors: {
         transparent: 'transparent',
         white: '#FFFFFF',
@@ -27,7 +36,21 @@ module.exports = {
         gray: '#E4E8F4',
         lilac: '#A3ACFA',
         pink: '#F72585h'
-      }
+      },
+      backgroundImage: {
+        'custom-gradient': 'linear-gradient(261deg, rgb(7, 26, 103), rgb(163, 163, 163))',
+      },
+      keyframes: {
+        bounce: {
+          '0%, 100%': { transform: 'translateY(-25%)', animationTimingFunction: 'cubic-bezier(0.8, 0, 1, 1)' },
+          '50%': { transform: 'translateY(0)', animationTimingFunction: 'cubic-bezier(0, 0, 0.2, 1)' },
+        },
+      },
+      animation: {
+        bounce: 'bounce 1s infinite',
+        bounce200: 'bounce 1s infinite 0.2s',
+        bounce400: 'bounce 1s infinite 0.4s',
+      },
     },
   },
   plugins: [],

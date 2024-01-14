@@ -2,6 +2,13 @@
 @tailwind components;
 @tailwind utilities;
 
+@import url('fonts.css');
+
+@layer base {
+    html {
+      font-family: 'Open Sans', sans-serif;
+    }
+}
 
 body, html {
     background-image: url(./assets/images/body-bg.jpg);

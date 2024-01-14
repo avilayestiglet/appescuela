@@ -29,26 +29,30 @@ const InputCustom = ({
     type = 'text',
     icon = 'email', // 'email' es el valor por defecto.
     name = '',
+    maxLength = 50,
     placeholder = '',
     onChanged,
-    isError = false
+    isError = false,
+    disabled = false,
+    error = 'Error de ejecución',
+    value = ''
 }) => {
     // Seleccionar el SVG path basado en el tipo de ícono requerido.
     const iconSVG = icons[icon] || icons['email']; // Fallback a 'email' si el ícono no es reconocido.
 
-    const borderColorClass = isError ? 'border-red-500' : 'border-gray-200';
-    const iconColorClass = isError ? 'text-red-500' : 'text-gray-400';
-    const errorMessage = isError ? <span className="text-sm text-red-500">Error con el input</span> : null;
+    const borderColorClass = isError ? 'border-red-500' : 'border-slate-300';
+    const iconColorClass = isError ? 'text-red-500' : 'text-slate-800';
+    const errorMessage = isError ? <span className="text-sm text-red-500">{error}</span> : null;
 
     return (
         <div className="mb-4">
-            <div className={`flex items-center ${borderColorClass} border-slate-300 rounded-2xl py-2 px-3 border-2 bg-slate-50`}>
+            <div className={`flex items-center ${borderColorClass}  rounded-2xl py-2 px-3 border-2 bg-slate-50`}>
                 <svg xmlns="http://www.w3.org/2000/svg" className={`h-5 w-5 ${iconColorClass}`} fill="none"
                     viewBox={iconSVG.viewBox} stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"
                         d={iconSVG.path} />
                 </svg>
-                <input className="pl-2 outline-none border-none w-full bg-transparent" type={type} name={name} id={id} placeholder={placeholder} onChange={onChanged} />
+                <input value={value} className={`pl-2 outline-none border-none w-full ${isError ? " placeholder:text-red-500 text-red-500" : "text-slate-800"} bg-transparent `} type={type} name={name} id={id} placeholder={placeholder} onChange={onChanged}  maxLength={maxLength} disabled={disabled}/>
             </div>
             {errorMessage}
         </div>

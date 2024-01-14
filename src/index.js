@@ -1,13 +1,18 @@
-import './index.css';
+// index.js
+import './index.css'
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import reportWebVitals from './reportWebVitals';
 import router from './routes/router';
-import { RouterProvider } from 'react-router-dom';
+import { LoaderProvider } from './compartido/services/loader.provider';
+import App from './App'; // Asegúrate de importar el componente App que acabas de crear
 
-ReactDOM.createRoot(document.getElementById("root")).render(
+const root = ReactDOM.createRoot(document.getElementById("root"));
+root.render(
   <React.StrictMode>
-    <RouterProvider router={router} />
+    <LoaderProvider>
+      <App router={router} />
+    </LoaderProvider>
   </React.StrictMode>
 );
 
