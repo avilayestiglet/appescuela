@@ -53,4 +53,4 @@ const ModalCreateComponent = ({
   );
 };
 
-export default ModalErrorComponent;
+export default ModalCreateComponent;

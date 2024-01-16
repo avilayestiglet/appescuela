@@ -5,7 +5,7 @@ const ItemCarousel = ({ item }) => {
 
   return (
     <div className="flex flex-wrap overflow-hidden h-screen justify-center items-center"> {/* // fila */}
-      <div className="w-full md:w-1/2 p-3 h-screen flex justify-center items-stretch"> {/* // columna */}
+      <div className="w-full md:w-1/2 px-3 pt-3 h-3/4 flex justify-center items-stretch"> {/* // columna */}
         <div>
           <img 
             className="h-full w-full object-contain"
@@ -14,7 +14,7 @@ const ItemCarousel = ({ item }) => {
           } alt={item.title} />
         </div>
       </div>
-      <div className="w-full md:w-1/2 p-3  h-3/4 flex justify-center items-stretch" style={{minHeight: "50%"}}> {/* // columna */}
+      <div className="w-full md:w-1/2 px-3 pt-3 h-3/4 flex justify-center items-stretch" style={{minHeight: "50%"}}> {/* // columna */}
         <div className="shadow-lg rounded-lg p-5 bg-white"> {/* card-init equivalente */}
           <div className='flex justify-center'>
           <svg  xmlns="http://www.w3.org/2000/svg" viewBox={item.viewBox} className="w-12 h-12 fill-current text-primaryLight">

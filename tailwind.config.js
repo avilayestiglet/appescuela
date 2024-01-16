@@ -18,7 +18,7 @@ module.exports = {
         transparent: 'transparent',
         white: '#FFFFFF',
         black: '#000000',
-        primary: '#003A8A',
+        primary: '#071A67',
         primaryDark: '#06365E',
         primaryLight: '#3478b0',
         tabColor: '#D5DEEF',

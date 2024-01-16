@@ -11,7 +11,7 @@ import TeacherPage from "../funcionalidad/dashboard/pages/teacher/teacher.page";
 import StudentPage from "../funcionalidad/dashboard/pages/student.page";
 import SectionsPage from "../funcionalidad/dashboard/pages/sections.page";
 import RatingsPage from "../funcionalidad/dashboard/pages/ratings.page";
-import BinnaclePage from "../funcionalidad/dashboard/pages/binnacle.page";
+import BinnaclePage from "../funcionalidad/dashboard/pages/binnacle/binnacle.page";
 import BackupPage from "../funcionalidad/dashboard/pages/backup.page";
 import ProfilePage from "../funcionalidad/dashboard/pages/profile.page";
 

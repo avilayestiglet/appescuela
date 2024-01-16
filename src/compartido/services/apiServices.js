@@ -24,8 +24,8 @@ axiosInstance.interceptors.response.use(
 );
 
 const apiService = {
-  get: (path) => {
-    return from(axiosInstance.get(`${base}${path}`)).pipe(
+  get: (path, params = {}) => {
+    return from(axiosInstance.get(`${base}${path}`,{ params })).pipe(
       map(response => response.data),
       catchError(error => { 
         if(error.status == 0){

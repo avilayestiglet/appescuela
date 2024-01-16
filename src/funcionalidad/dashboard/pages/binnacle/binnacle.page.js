@@ -3,16 +3,16 @@ import ModalErrorComponent from "../../../../compartido/components/modal/modal.e
 import dashboardApiService from "../../services/dashboard.service";
 import HeaderComponentRoute from "../../components/header/header.component";
 import TableComponent from "../../../../compartido/components/table/table.component";
-import TeacherItem from "./teacher.item";
-import TeacherFilters from "./teacher.filters";
-import TeacherActions from "./teacher.actions";
+import BinnacleItem from "./binnacle.item";
+import BinnacleFilters from "./binnacle.filters";
+import BinnacleActions from "./binnacle.actions";
 import ModalCreateComponent from "../../components/modals/modal.create";
 import generatePDF from "../../../../compartido/utils/generate-pdf.utils";
 
 // ... otros imports
 
-const TeacherPage = () => {
-  const listHeaders = ["Cédula", "Nombre", "Edad", "Correo", "Direccion", "Acciones"];
+const BinnaclePage = () => {
+  const listHeaders = ["Actividad", "Fecha", "Correo"];
   
   // Estados para controlar la visualización de los modales y el manejo de errores
   const [showModal, setShowModal] = useState(false);
@@ -23,8 +23,8 @@ const TeacherPage = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   // Estado para almacenar los datos de los profesores y para descarga
-  const [teachersBody, setTeachersBody] = useState([]);
-  const [teachersResults, setTeachersResults] = useState([]);
+  const [binnacleBody, setBinnacleBody] = useState([]);
+  const [binnacleResults, setBinnacleResults] = useState([]);
   const [downloadData, setDownloadData] = useState([]);
 
   // Estado para controlar la paginación
@@ -44,8 +44,8 @@ const TeacherPage = () => {
 
   // Función para limpiar los datos de los profesores
   const clean = useCallback(() => {
-    setTeachersBody([]);
-    setTeachersResults([]);
+    setBinnacleBody([]);
+    setBinnacleResults([]);
     setPaginate({
       currentPage: null,
       totalPages: null,
@@ -61,13 +61,13 @@ const TeacherPage = () => {
   const onSubmit = useCallback((event, current = 1) => {
     event.preventDefault();
     setIsLoading(true);
-    dashboardApiService.getTeachers({ limit: 10, current }).subscribe((data) => {
+    dashboardApiService.getBinnacle({ limit: 10, page: current }).subscribe((data) => {
       setIsLoading(false);
       if (data.status === 200) {
-        setTeachersBody(data?.data.map((item, i) => (
-          <TeacherItem key={i} item={item} itemSelected={itemSelected} />
+        setBinnacleBody(data?.data.map((item, i) => (
+          <BinnacleItem key={i} item={item} itemSelected={itemSelected} />
         )) ?? []);
-        setTeachersResults(data.data);
+        setBinnacleResults(data.data);
         setDownloadData(data.data);
         setPaginate({
           currentPage: data.current,
@@ -79,10 +79,11 @@ const TeacherPage = () => {
         setError(error);
       }
     })
-  }, [itemSelected, setTeachersBody, setTeachersResults, setDownloadData, setPaginate]);
+  }, [itemSelected, setBinnacleBody, setBinnacleResults, setDownloadData, setPaginate]);
 
   // Funciones para manejar la paginación
   const onPageChangeCallback = useCallback((event, current) => {
+    
     onSubmit(event, current);
   }, [onSubmit]);
 
@@ -114,24 +115,24 @@ const TeacherPage = () => {
 
   // useMemo para los filtros y el pie de página, para evitar recálculos innecesarios
   const filters = useMemo(() => (
-    <TeacherFilters onSubmit={onSubmit} clean={clean} isLoading={isLoading} />
+    <BinnacleFilters onSubmit={onSubmit} clean={clean} isLoading={isLoading} />
   ), [onSubmit, clean, isLoading]);
 
   const footer = useMemo(() => (
-    <TeacherActions callback={actions} />
+    <BinnacleActions callback={actions} />
   ), [actions]);
 
   return (
     <div>
       <HeaderComponentRoute
         item={{
-          title: "Profesor",
-          name: "Profesor",
+          title: "Bitácora",
+          name: "Bitácora",
           parent: "Dashboard",
         }}
       />
       <ModalErrorComponent
-        title="Error al consultar los profesores"
+        title="Error al consultar los registros"
         message={error?.error ?? "Error de conexión"}
         show={showModal}
         callback={handleModal}
@@ -139,7 +140,7 @@ const TeacherPage = () => {
       <ModalCreateComponent 
         show={showModalCreate}
         title="Crear profesor"
-        children={<div>Contenido del modal paraCrear profesor</div>}
+        children={<div>Contenido del modal para crear bitácora</div>}
         callback={hiddenCreateModal}
       />
       <div className="p-5">
@@ -148,7 +149,7 @@ const TeacherPage = () => {
             headers: listHeaders,
             filters,
             paginate: true,
-            body: teachersBody,
+            body: binnacleBody,
             footer,
           }}
           paginate={paginate}
@@ -159,7 +160,7 @@ const TeacherPage = () => {
   );
 };
 
-// Asegúrate de que todos tus componentes secundarios, como TeacherFilters, TeacherItem, TeacherActions, etc.,
+// Asegúrate de que todos tus componentes secundarios, como BinnacleFilters, BinnacleItem, BinnacleActions, etc.,
 // estén definidos y exportados correctamente desde sus respectivos archivos.
 
-export default TeacherPage;
+export default BinnaclePage;
