@@ -1,0 +1,28 @@
+/* En tu archivo CSS, por ejemplo, styles.css */
+@font-face {
+    font-family: 'Open Sans';
+    src: url('./assets/fonts/OpenSans-Regular.ttf') format('truetype');
+    font-weight: 400; /* Peso normal */
+    font-style: normal; /* Estilo normal */
+}
+
+@font-face {
+    font-family: 'Open Sans';
+    src: url('./assets/fonts/OpenSans-Bold.ttf') format('truetype');
+    font-weight: 700; /* Peso en negrita */
+    font-style: normal; /* Estilo normal - aunque 'bold' también podría ser 'normal' en este contexto */
+}
+
+@font-face {
+    font-family: 'Open Sans';
+    src: url('./assets/fonts/OpenSans-Light.ttf') format('truetype');
+    font-weight: 300; /* Peso ligero */
+    font-style: normal; /* Estilo normal */
+}
+
+@font-face {
+    font-family: 'Open Sans';
+    src: url('./assets/fonts/OpenSans-Medium.ttf') format('truetype');
+    font-weight: 500; /* Peso medio */
+    font-style: normal; /* Estilo normal */
+}
