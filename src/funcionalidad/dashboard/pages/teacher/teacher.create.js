@@ -1,52 +1,77 @@
-import React, { useState } from "react";
+import React, { useCallback, useMemo, useState } from "react";
 import InputCustom from "../../../../compartido/components/input/input";
+import ButtonCustom from "../../../../compartido/components/button/button.component";
+import dashboardApiService from "../../services/dashboard.service";
+import ModalInfoComponent from "../../../../compartido/components/modal/modal.info.component";
 
 const CreateForm = () => {
+
   const [profesor, setProfesor] = useState({
     cedula: "",
-    nombre: "",
+    nombre_completo: "",
     edad: "",
-    correo: "",
+    email: "",
+    password: "",
     direccion: "",
+    id_tipo: "profesor"
   });
+  const [isLoading, setIsLoading] = useState(false); 
+  const [showModalSuccess, setShowModalSuccess] = useState(false);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = useCallback((e) => {
     e.preventDefault();
-
-    setProfesor({
-      ...profesor,
-      cedula: e.target.cedula.value,
-      nombre: e.target.nombre.value,
-      edad: e.target.edad.value,
-      correo: e.target.correo.value,
-      direccion: e.target.direccion.value,
-    });
+    setIsLoading(true);
 
     // Aquí puedes añadir la lógica para enviar los datos del profesor a una API o guardarlos en un estado global
-    console.log("Profesor creado:", profesor);
-  };
+    console.log("Profesor creado:", { ...profesor, cedula: 'V'+profesor.cedula});
+    dashboardApiService.createTeacher({ ...profesor, cedula: 'V'+profesor.cedula})
+    .subscribe(result => {
+      setIsLoading(false);
+      if(result.status === 200){
+        setProfesor({
+          cedula: "",
+          nombre_completo: "",
+          edad: "",
+          email: "",
+          password: "",
+          direccion: "",
+          id_tipo: "profesor"
+        });
+        setShowModalSuccess(true);
+      }
+    });
+  }, [profesor, showModalSuccess, isLoading]);
 
   return (
     <form className="formulario flex flex-col" onSubmit={handleSubmit}>
+      <ModalInfoComponent 
+        show={showModalSuccess} 
+        message="Profesor registrado con éxito!" 
+        title="Registra Profesor" 
+        callback={() => {setShowModalSuccess(false)}}
+      />
       <div>
         <InputCustom
+          icon="addresscard"
           id="cedula"
           label="Cédula"
           type="text"
           value={profesor.cedula}
-          onChange={(e) => setProfesor({ ...profesor, cedula: e.target.value })}
+          onChanged={useCallback((e) => setProfesor({ ...profesor, cedula: e.target.value.replace(/\D/g, '') }), [profesor])}
           placeholder="Ingrese la cédula"
+          maxLength={9}
           required
         />
       </div>
       <div>
         <InputCustom
-          id="nombre"
+          id="nombre_completo"
           label="Nombre"
           type="text"
-          value={profesor.nombre}
-          onChange={(e) => setProfesor({ ...profesor, nombre: e.target.value })}
-          placeholder="Ingrese el nombre"
+          value={profesor.nombre_completo}
+          onChanged={useCallback((e) => setProfesor({ ...profesor, nombre_completo: e.target.value }), [profesor])}
+          placeholder="Ingrese el nombre y apellido"
+          maxLength={30}
           required
         />
       </div>
@@ -54,22 +79,34 @@ const CreateForm = () => {
         <InputCustom
           id="edad"
           label="Edad"
-          type="number"
+          type="text"
           value={profesor.edad}
-          onChange={(e) => setProfesor({ ...profesor, edad: e.target.value })}
+          onChanged={useCallback((e) => setProfesor({ ...profesor, edad: e.target.value.replace(/\D/g, '') }), [profesor])}
           placeholder="Ingrese la edad"
           required
-          minLength={18}
+          minLength={2}
         />
       </div>
       <div>
         <InputCustom
-          id="correo"
+          id="email"
           label="Correo"
           type="email"
-          value={profesor.correo}
-          onChange={(e) => setProfesor({ ...profesor, correo: e.target.value })}
-          placeholder="Ingrese el correo electrónico"
+          value={profesor.email}
+          onChanged={useCallback((e) => setProfesor({ ...profesor, email: e.target.value }), [profesor])}
+          placeholder="Ingrese el email electrónico"
+          required
+          pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+.[a-zA-Z]{2,}$"
+        />
+      </div>
+      <div>
+        <InputCustom
+          id="password"
+          label="password"
+          type="password"
+          value={profesor.password}
+          onChanged={useCallback((e) => setProfesor({ ...profesor, password: e.target.value }), [profesor])}
+          placeholder="Ingrese la contraseña"
           required
           pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+.[a-zA-Z]{2,}$"
         />
@@ -80,13 +117,18 @@ const CreateForm = () => {
           label="Dirección"
           type="text"
           value={profesor.direccion}
-          onChange={(e) => setProfesor({ ...profesor, direccion: e.target.value })}
+          onChanged={useCallback((e) => setProfesor({ ...profesor, direccion: e.target.value }), [profesor])}
           placeholder="Ingrese la dirección"
           required
         />
       </div>
       <div>
-        <button type="submit">Añadir profesor</button>
+        <ButtonCustom 
+          type="submit" 
+          children="Añadir profesor" 
+          isLoading={isLoading}
+          role="primary"
+        />
       </div>
     </form>
   );

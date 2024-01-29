@@ -1,12 +1,12 @@
 import React from "react";
 import ActionButton from "../../../../compartido/components/button/action.button.component";
 
-const BinnacleActions = ({ callback }) => {
+const BinnacleActions = ({ callback, data }) => {
   return (
     <div className="flex flex-row">
-      <div className="mx-2">
+      <div className="mx-4">
         <ActionButton
-          callback={() => callback("download")}
+          callback={() => callback({action: "download", data})}
           role="primary"
           type="button"
           children={
@@ -24,26 +24,7 @@ const BinnacleActions = ({ callback }) => {
           }
         />
       </div>
-      <div className="mx-2">
-        <ActionButton
-          role="primaryLight"
-          type="button"
-          callback={() => callback("create")}
-          children={
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 448 512"
-              enableBackground="new 0 0 20 20"
-              className="w-6 h-6 inline-block"
-            >
-              <path
-                fill="#FFFFFF"
-                d="M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32V224H48c-17.7 0-32 14.3-32 32s14.3 32 32 32H192V432c0 17.7 14.3 32 32 32s32-14.3 32-32V288H400c17.7 0 32-14.3 32-32s-14.3-32-32-32H256V80z"
-              />
-            </svg>
-          }
-        />
-      </div>
+      
     </div>
   );
 };

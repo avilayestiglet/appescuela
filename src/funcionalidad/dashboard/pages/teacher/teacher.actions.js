@@ -1,12 +1,14 @@
 import React from "react";
 import ActionButton from "../../../../compartido/components/button/action.button.component";
 
-const TeacherActions = ({ callback }) => {
+const TeacherActions = ({ callback, data }) => {
   return (
     <div className="flex flex-row">
       <div className="mx-2">
         <ActionButton
-          callback={() => callback("download")}
+          callback={() => {
+            return callback({action:"download", data });
+          }}
           role="primary"
           type="button"
           children={
@@ -28,7 +30,7 @@ const TeacherActions = ({ callback }) => {
         <ActionButton
           role="primaryLight"
           type="button"
-          callback={() => callback("create")}
+          callback={() => callback({action:"create"})}
           children={
             <svg
               xmlns="http://www.w3.org/2000/svg"

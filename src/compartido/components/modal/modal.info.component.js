@@ -1,7 +1,5 @@
 import React from "react";
 
-
-
 const ModalInfoComponent = ({ show, title = "Exitoso", message = "", callback }) => {
   return (
 

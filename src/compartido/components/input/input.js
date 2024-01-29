@@ -1,5 +1,6 @@
 import React from "react";
 
+
 // Definir un objeto que mapea los tipos de íconos a su correspondiente SVG path
 const icons = {
   email: {
@@ -21,6 +22,10 @@ const icons = {
   people: {
     path: "M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z",
     viewBox: "0 0 20 20"
+  },
+  addresscard: {
+    path: "M512 80c8.8 0 16 7.2 16 16V416c0 8.8-7.2 16-16 16H64c-8.8 0-16-7.2-16-16V96c0-8.8 7.2-16 16-16H512zM64 32C28.7 32 0 60.7 0 96V416c0 35.3 28.7 64 64 64H512c35.3 0 64-28.7 64-64V96c0-35.3-28.7-64-64-64H64zM208 256a64 64 0 1 0 0-128 64 64 0 1 0 0 128zm-32 32c-44.2 0-80 35.8-80 80c0 8.8 7.2 16 16 16H304c8.8 0 16-7.2 16-16c0-44.2-35.8-80-80-80H176zM376 144c-13.3 0-24 10.7-24 24s10.7 24 24 24h80c13.3 0 24-10.7 24-24s-10.7-24-24-24H376zm0 96c-13.3 0-24 10.7-24 24s10.7 24 24 24h80c13.3 0 24-10.7 24-24s-10.7-24-24-24H376z",
+    viewBox: "0 0 576 512"
   }
 };
 
@@ -29,6 +34,7 @@ const InputCustom = ({
     type = 'text',
     icon = 'email', // 'email' es el valor por defecto.
     name = '',
+    pattern,
     maxLength = 50,
     placeholder = '',
     onChanged,
@@ -58,6 +64,7 @@ const InputCustom = ({
                   className={`pl-2 outline-none border-none w-full ${isError ? " placeholder:text-red-500 text-red-500" : "text-slate-800"} bg-transparent `} type={type} name={name} id={id} placeholder={placeholder} onChange={onChanged}  maxLength={maxLength} disabled={disabled}
                   onKeyUp={onKeypress}
                   onKeyDown={onKeypress}
+                  pattern={pattern}
                   />
                   
             </div>

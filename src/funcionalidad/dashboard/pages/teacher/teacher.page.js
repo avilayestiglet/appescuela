@@ -8,7 +8,7 @@ import  CreateForm  from "./teacher.create";
 import TeacherFilters from "./teacher.filters";
 import TeacherActions from "./teacher.actions";
 import ModalCreateComponent from "../../components/modals/modal.create";
-import generatePDF from "../../../../compartido/utils/generate-pdf.utils";
+import getPDF from "../../../../compartido/utils/generate-pdf.utils";
 
 // ... otros imports
 
@@ -25,7 +25,6 @@ const TeacherPage = () => {
 
   // Estado para almacenar los datos de los profesores y para descarga
   const [teachersBody, setTeachersBody] = useState([]);
-  const [teachersResults, setTeachersResults] = useState([]);
   const [downloadData, setDownloadData] = useState([]);
 
   // Estado para controlar la paginación
@@ -46,7 +45,6 @@ const TeacherPage = () => {
   // Función para limpiar los datos de los profesores
   const clean = useCallback(() => {
     setTeachersBody([]);
-    setTeachersResults([]);
     setPaginate({
       currentPage: null,
       totalPages: null,
@@ -55,7 +53,6 @@ const TeacherPage = () => {
 
   // Función que se llama cuando se selecciona un item
   const itemSelected = useCallback((item, type) => {
-    console.log(item, type);
   }, []);
 
   // Función para manejar el envío del formulario de filtros
@@ -68,7 +65,6 @@ const TeacherPage = () => {
         setTeachersBody(data?.data.map((item, i) => (
           <TeacherItem key={i} item={item} itemSelected={itemSelected} />
         )) ?? []);
-        setTeachersResults(data.data);
         setDownloadData(data.data);
         setPaginate({
           currentPage: data.current,
@@ -76,11 +72,11 @@ const TeacherPage = () => {
         });
       } else {
         setIsLoading(false);
-        setShowModal(true);
         setError(error);
+        setShowModal(true);
       }
     })
-  }, [itemSelected, setTeachersBody, setTeachersResults, setDownloadData, setPaginate]);
+  }, [itemSelected, error]);
 
   // Funciones para manejar la paginación
   const onPageChangeCallback = useCallback((event, current) => {
@@ -89,13 +85,13 @@ const TeacherPage = () => {
 
   // Funciones para las acciones de los profesores (crear y descargar)
 
-const actions = useCallback(({ action }) => {
+const actions = useCallback(({ action, data }) => {
   switch (action) {
     case "create":
       setShowModalCreate(true);
-      break;
+    break;
     case "download":
-      download();
+      download(data);
       break;
     default:
       // No hacer nada
@@ -105,8 +101,7 @@ const actions = useCallback(({ action }) => {
 
 // Función para descargar un PDF de una lista de profesores
 
-const download = useCallback(() => {
-  const data = downloadData;
+const download = useCallback((data) => {
   if (data.length > 0) {
     generatePDF({
       name: "lista_de_profesores",
@@ -120,12 +115,12 @@ const download = useCallback(() => {
       data,
     });
   }
-}, [downloadData]);
+}, []);
 
 // Función para generar un PDF
 
 const generatePDF = useCallback(({ name, columns, data }) => {
-  // Implementar la lógica para generar el PDF
+  getPDF({ name, columns, data });
 }, []);
 
   // useMemo para los filtros y el pie de página, para evitar recálculos innecesarios
@@ -134,8 +129,8 @@ const generatePDF = useCallback(({ name, columns, data }) => {
   ), [onSubmit, clean, isLoading]);
 
   const footer = useMemo(() => (
-    <TeacherActions callback={actions} />
-  ), [actions]);
+    <TeacherActions callback={actions} data={downloadData}/>
+  ), [actions, downloadData]);
 
   return (
     <div>
@@ -160,13 +155,13 @@ const generatePDF = useCallback(({ name, columns, data }) => {
       />
       <div className="p-5">
         <TableComponent
-          data={{
-            headers: listHeaders,
-            filters,
+          config={{
             paginate: true,
-            body: teachersBody,
-            footer,
           }}
+          body={teachersBody}
+          headers={listHeaders}
+          filters={filters}
+          actions={footer}
           paginate={paginate}
           onPageChange={onPageChangeCallback}
         />

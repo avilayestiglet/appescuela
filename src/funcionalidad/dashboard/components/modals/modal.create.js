@@ -24,7 +24,7 @@ const ModalCreateComponent = ({
             <button
               type="button"
               onClick={callback}
-              className="block w-full rounded border border-stroke bg-gray p-3 text-center font-medium text-black transition hover:border-meta-1 hover:bg-meta-1 hover:text-white dark:border-strokedark dark:bg-meta-4 dark:text-white dark:hover:border-meta-1 dark:hover:bg-meta-1"
+              className="flex justify-center rounded-2xl border border-stroke py-2 px-6 font-medium text-slate-800 hover:shadow-1 mb-4 w-full"
             >
               Cerrar
             </button>

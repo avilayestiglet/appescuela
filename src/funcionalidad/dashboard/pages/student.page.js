@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useCallback, useMemo, useState } from "react";
 import TableComponent from "../../../compartido/components/table/table.component";
 import InputCustom from "../../../compartido/components/input/input";
 import ButtonCustom from "../../../compartido/components/button/button.component";
@@ -9,13 +9,11 @@ import dashboardApiService from "../services/dashboard.service";
 const StudentPage = () => {
     const [showModal, setShowModal] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
+      const [students, setStudents] = useState([]);
     const [error, setError] = useState(null);
 
     const clean = () => {
-        setStudents({
-          ...students,
-          body: [],
-        });
+        setStudents([]);
       };
       const FormattedBody = ({ item, i }) => {
         return (
@@ -29,9 +27,29 @@ const StudentPage = () => {
           </tr>
         );
       };
-      
+      const onSubmit = useCallback(
+        (event) => {
+          setIsLoading(true);
+          event.preventDefault();
+          const response = dashboardApiService.getStudents();
+          response.subscribe((data) => {
+            setIsLoading(false);
+            if (data.status === 200) {
+              if (data.data != null) {
+                setStudents(
+                    data.data.map((item, i) => <FormattedBody item={item} i={i} />) ??
+                    [],
+                );
+              }
+            } else {
+              setShowModal(true);
+              setError(data);
+            }
+          });
+        }
+      );
     
-      const Filters = () => {
+      const filters = useMemo(() => {
         return (
           <div className="w-full border-b border-strokedark border-[#eee] flex flex-wrap justify-end">
             
@@ -55,12 +73,12 @@ const StudentPage = () => {
             </form>
           </div>
         );
-      };
+      }, [isLoading , clean]);
       const handleModal = () => {
         setShowModal(false);
       };
     
-      const FooterActions = () => {
+      const footerActions = () => {
         return (
           <div>
             <ActionButton
@@ -83,33 +101,7 @@ const StudentPage = () => {
           </div>
         );
       };
-      const [students, setStudents] = useState({
-        headers: ["Nombre", "Matricula"],
-        filters: Filters,
-        body: [],
-        footer: FooterActions,
-      });
-      const onSubmit = (event) => {
-        setIsLoading(true);
-        event.preventDefault();
-        const response = dashboardApiService.getStudents();
-        response.subscribe((data) => {
-          setIsLoading(false);
-          if (data.status == 200) {
-            if (data.data != null) {
-              setStudents({
-                ...students,
-                body:
-                  data.data.map((item, i) => <FormattedBody item={item} i={i} />) ??
-                  [],
-              });
-            }
-          } else {
-            setShowModal(true);
-            setError(data);
-          }
-        });
-      };
+      
     
       return (
         <div className="p-5">
@@ -119,7 +111,13 @@ const StudentPage = () => {
             show={showModal}
             callback={handleModal}
           />
-          <TableComponent data={students} />
+          <TableComponent 
+            body={students}   
+            headers={["nombre", "matricula"]}    
+            filters={filters}   
+            footer={footerActions}
+            config={{paginate: false}}           
+          />
         </div>
       );
  };

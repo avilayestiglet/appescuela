@@ -88,27 +88,23 @@ const BinnaclePage = () => {
   }, [onSubmit]);
 
   // Funciones para las acciones de los profesores (crear y descargar)
-  const actions = useCallback((action) => {
-    if(action === "create"){
-      setShowModalCreate(true);
-    } else if(action === "download"){
-      download();
+  const actions = useCallback(({action, data}) => {
+    if(action === "download"){
+      download(data);
     }
   }, []);
 
-  const download = useCallback(() => {
-    console.log(downloadData);
-    if (downloadData.length > 0) {
+  const download = useCallback((data) => {
+    console.log(data)
+    if (data.length > 0) {
       generatePDF({
-        name: 'lista_de_profesores', 
+        name: 'lista_de_bitacora', 
         columns: [
-          { header: "Cédula", dataKey: "cedula"},
-          { header: "Nombre", dataKey: "nombre"},
-          { header: "Edad", dataKey: "edad"},
+          { header: "Actividad", dataKey: "actividad"},
+          { header: "Fecha", dataKey: "fecha"},
           { header: "Correo", dataKey: "email"},
-          { header: "Direccion", dataKey: "direccion"},
         ],
-        data: downloadData
+        data: data
       });
     }
   }, [downloadData]);
@@ -119,8 +115,8 @@ const BinnaclePage = () => {
   ), [onSubmit, clean, isLoading]);
 
   const footer = useMemo(() => (
-    <BinnacleActions callback={actions} />
-  ), [actions]);
+    <BinnacleActions callback={actions} data={downloadData} />
+  ), [actions, downloadData]);
 
   return (
     <div>
@@ -145,13 +141,11 @@ const BinnaclePage = () => {
       />
       <div className="p-5">
         <TableComponent
-          data={{
-            headers: listHeaders,
-            filters,
-            paginate: true,
-            body: binnacleBody,
-            footer,
-          }}
+          body={binnacleBody}
+          config={{paginate: true}}
+          headers={listHeaders}
+          filters={filters}
+          actions={footer}
           paginate={paginate}
           onPageChange={onPageChangeCallback}
         />
