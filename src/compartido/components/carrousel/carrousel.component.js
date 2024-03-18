@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import ItemCarousel from "./item.carrousel";
-import ofrecemos from "../../../assets/images/ofrecemos.png";
 
 const CarouselComponent = ({ items }) => {
     const [currentIndex, setCurrentIndex] = useState(0);

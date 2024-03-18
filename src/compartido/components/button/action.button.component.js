@@ -1,5 +1,4 @@
 // FloatingActionButton.jsx
-import React, { useState } from 'react';
 
 const roles = {
     primary: "p-0 w-14 h-14 bg-primary text-center rounded-full hover:bg-primaryDark active:shadow-lg mouse shadow transition ease-in duration-200 focus:outline-none",

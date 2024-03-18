@@ -6,7 +6,6 @@ import { useLoader } from './compartido/services/loader.provider';
 
 const App = ({ router }) => {
   const { isLoading } = useLoader();
-
   return (
     <>
       {isLoading && <LoaderComponent />}

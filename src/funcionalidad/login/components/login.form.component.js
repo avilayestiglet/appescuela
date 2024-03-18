@@ -18,17 +18,15 @@ const LoginForm = ({ callback, isRemove = false }) => {
     setIsLoading(true);
     const response = loginApiService.login({ email, password });
     response.subscribe((data => {
-      console.log(data);
       setIsLoading(false);
-      if(data.status == 200) {
-        if(data.token != null && data.token != undefined) {
-          localStorage.setItem('token', data.token)
+        if(data.token !== null && data.token !== undefined) {
+          localStorage.setItem('user', JSON.stringify(data))
           navigate('/dashboard')
+          return;
+        }else{
+          setShowModal(true);
+          setError(data);
         }
-      }else{
-        setShowModal(true);
-        setError(data);
-      }
     }))
   };
   
@@ -44,8 +42,8 @@ const LoginForm = ({ callback, isRemove = false }) => {
       <ModalErrorComponent show={showModal} title={"Error al iniciar sesión"} message={error?.error ?? ""} callback={hiddenModal}/>
       <h1 className="text-gray-800 font-bold text-4xl mb-1"><center>¡Hola!</center></h1>
       <p className="text-md font-normal mb-7 ">Bienvenido al portal</p>
-      <InputCustom icon="email" placeholder="Correo electrónico" type="email" value={email} onChanged={(e) => setEmail(e.target.value)} disabled={isLoading}/>
-      <InputCustom icon="password" placeholder="Contraseña" type="password" value={password} onChanged={(e) => setPassword(e.target.value)} disabled={isLoading}/>
+      <InputCustom id="email" icon="email" placeholder="Correo electrónico" type="email" value={email} onChanged={(e) => setEmail(e.target.value)} disabled={isLoading}/>
+      <InputCustom id="password" icon="password" placeholder="Contraseña" type="password" value={password} onChanged={(e) => setPassword(e.target.value)} disabled={isLoading}/>
       <div className="flex flex-col justify-center text-center">
         <ButtonCustom children={"Iniciar Sesión"} isLoading={isLoading} role={"primary"} type={"submit"}/>
         <span onClick={onRemoveCallback} className="text-sm ml-2 hover:text-yellow-400 cursor-pointer">

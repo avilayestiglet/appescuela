@@ -4,7 +4,7 @@ const dashboardApiService = {
     getTeachers: (params = {}) => apiService.get("/profesor", params),
     getBinnacle: (params = {}) => apiService.get("/bitacora", params),
     getStudents: (body = {}) => apiService.get("/alumnos"),
-    getUser: (body = {}) => apiService.post("/user", body),
+    getUser: (params = {}) => apiService.get("/user", params),
     createTeacher: (body = {}) => apiService.post("/create-teacher", body)
 };
 

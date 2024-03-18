@@ -1,9 +1,11 @@
 // http.interceptor.js
 
 const requestInterceptor = (config) => {
-  const token = localStorage.getItem('token');
-  if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
+  const result = localStorage.getItem('user');
+
+  if (result) {
+      const user = JSON.parse(result);
+      config.headers.Authorization = `Bearer ${user.token}`;
   }
   return config;
 };

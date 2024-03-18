@@ -12,10 +12,11 @@ const DashboardComponent = () => {
     const [error, setError] = useState(null);
 
     const getProfile = () => {
-        const subscription = dashboardApiService.getUser({}).subscribe({
+        const user = JSON.parse(localStorage.getItem('user'));
+        const subscription = dashboardApiService.getUser({ id: user.id }).subscribe({
             next: (data) => {
-                if (data.status === 200 && data.data != null) {
-                    setProfile(data.data);
+                if (data!=null) {
+                    setProfile(data);
                 } else {
                     setError(data);
                     setShowModal(true);

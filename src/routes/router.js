@@ -14,6 +14,7 @@ import RatingsPage from "../funcionalidad/dashboard/pages/ratings.page";
 import BinnaclePage from "../funcionalidad/dashboard/pages/binnacle/binnacle.page";
 import BackupPage from "../funcionalidad/dashboard/pages/backup.page";
 import ProfilePage from "../funcionalidad/dashboard/pages/profile.page";
+import LogoutPage from "../funcionalidad/dashboard/pages/logout.page";
 
 const router = createBrowserRouter([
   {
@@ -59,6 +60,10 @@ const router = createBrowserRouter([
       {
         path: "profile",
         element: <ProfilePage/>
+      },
+      {
+        path: "logout",
+        element: <LogoutPage />
       }
     ]
   }

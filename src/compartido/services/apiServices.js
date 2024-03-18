@@ -10,7 +10,7 @@ import httpInterceptors from './http.interceptor';
 const axiosInstance = axios.create();
 
 // base url
-const base = "http://localhost:5000";
+const base = process.env.REACT_APP_API_URL;
 
 // Añade los interceptores a la instancia de Axios
 axiosInstance.interceptors.request.use(

@@ -32,7 +32,7 @@ const RegisterForm = ({ callback, isRemove = false }) => {
       password: null
     })
       
-    if (email=="") {
+    if (email==="") {
       setIsLoading(false);
       setErrors({
         ...errors,
@@ -42,7 +42,7 @@ const RegisterForm = ({ callback, isRemove = false }) => {
       return;
     }
 
-    if (password=="") {
+    if (password==="") {
       setIsLoading(false);
       setErrors({
         ...errors,
@@ -132,6 +132,7 @@ if (!passwordRegex.test(password)) {
       <p className="text-sm font-normal text-gray-600 mb-7">Bienvenido</p>
     
       <InputCustom
+        id="email_register"
         placeholder="Correo Electrónico"
         icon="email"
         value={email}
@@ -143,6 +144,7 @@ if (!passwordRegex.test(password)) {
         onKeypress={keypressErrorInput}
       />
       <InputCustom
+        id="password_register"
         placeholder="Contraseña"
         icon="password"
         value={password}
