@@ -1,11 +1,22 @@
 import React from "react";
+import utils from "../../utils/utils";
 
-const ModalErrorComponent = ({ show, title = "Error", message = "", callback }) => {
-
-  
+const ModalErrorComponent = ({
+  show,
+  title = "Error",
+  message = [],
+  callback
+}) => {
+  const messageArray = (Array.isArray(message) ? message : [message]).map((x) =>
+    utils.translate(x)
+  );
 
   return (
-    <div className={`fixed top-0 left-0 z-999999999 flex h-full min-h-screen w-full items-center justify-center bg-black/90 px-4 py-5 ${(show) ? "block" : "hidden"}`}>
+    <div
+      className={`fixed top-0 left-0 z-999999999 flex h-full min-h-screen w-full items-center justify-center bg-black/90 px-4 py-5 ${
+        show ? "block" : "hidden"
+      }`}
+    >
       <div className="w-1/3 max-w-142.5 rounded-lg bg-white py-12 px-8 text-center dark:bg-boxdark md:py-15 md:px-17.5 relative">
         <span className="mx-auto inline-block">
           <svg
@@ -34,21 +45,29 @@ const ModalErrorComponent = ({ show, title = "Error", message = "", callback }) 
         <h3 className="mt-5.5 pb-2 text-xl font-bold text-slate-800  sm:text-2xl">
           {title}
         </h3>
-        <p className="mb-10">
-          {message}
-        </p>
+        <label className="mb-10 text-start">
+          {messageArray?.map((x, index) => (
+            <li key={index} className="mb-2">
+              {x}
+            </li>
+          ))}
+        </label>
         <div className="-mx-3 flex flex-wrap gap-y-4">
-        <div className="w-full px-3 2xsm:w-1/2">
-  <button
-    type="button"
-    onClick={callback}
-    className="block w-full rounded border border-yellow-400 bg-yellow-400 text-black p-3 text-center font-medium transition hover:border-yellow-300 hover:bg-yellow-300 dark:border-strokedark dark:bg-meta-4 dark:text-white dark:hover:border-meta-1 dark:hover:bg-meta-1"
-  >
-    Cerrar
-  </button>
-</div>
+          <div className="w-full px-3 2xsm:w-1/2">
+            <button
+              type="button"
+              onClick={callback}
+              className="block w-full rounded border border-yellow-400 bg-yellow-400 text-black p-3 text-center font-medium transition hover:border-yellow-300 hover:bg-yellow-300 dark:border-strokedark dark:bg-meta-4 dark:text-white dark:hover:border-meta-1 dark:hover:bg-meta-1"
+            >
+              Cerrar
+            </button>
+          </div>
         </div>
-        <button type="button" onClick={callback} className="absolute top-6 right-6 flex h-7 w-7 items-center justify-center rounded-full bg-slate-400 text-white transition hover:bg-slate-500 hover:text-slate-950">
+        <button
+          type="button"
+          onClick={callback}
+          className="absolute top-6 right-6 flex h-7 w-7 items-center justify-center rounded-full bg-slate-400 text-white transition hover:bg-slate-500 hover:text-slate-950"
+        >
           <svg
             width="10"
             height="10"

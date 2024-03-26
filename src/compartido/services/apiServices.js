@@ -44,8 +44,8 @@ const apiService = {
       })
     );
   },
-  post: (path, data) => {
-    return from(axiosInstance.post(`${base}${path}`, data)).pipe(
+  post: ({ path, data, params = {} }) => {
+    return from(axiosInstance.post(`${base}${path}`, data, { params })).pipe(
       map(response => response.data),
       catchError(error => { 
         console.log(error)

@@ -34,31 +34,31 @@ const router = createBrowserRouter([
         element: <InitPage/>
       },
       {
-        path: "teacher",
+        path: "teacher", // ruta profesor
         element: <TeacherPage/>
       },
       {
-        path: "student",
+        path: "student", // ruta estudiante
         element: <StudentPage/>
       },
       {
-        path: "sections",
+        path: "sections", // ruta sección
         element: <SectionsPage/>
       },
       {
-        path: "ratings",
+        path: "ratings", // 
         element: <RatingsPage/>
       },
       {
-        path: "binnacle",
+        path: "binnacle", // ruta bitacora
         element: <BinnaclePage/>
       },
       {
-        path: "backup",
+        path: "backup", // ruta respaldo
         element: <BackupPage/>
       },
       {
-        path: "profile",
+        path: "profile", // ruta perfil
         element: <ProfilePage/>
       },
       {

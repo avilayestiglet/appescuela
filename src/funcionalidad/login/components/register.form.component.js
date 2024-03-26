@@ -1,106 +1,49 @@
 import React, { useState } from "react";
-import { Navigate, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import InputCustom from "../../../compartido/components/input/input";
 import loginApiService from "../services/login.service";
 import ButtonCustom from "../../../compartido/components/button/button.component";
 import ModalErrorComponent from "../../../compartido/components/modal/modal.error.component";
 import ModalInfoComponent from "../../../compartido/components/modal/modal.info.component";
+import { useForm } from "react-hook-form";
+import registerUser from "../validations/register.user";
 
 
 const RegisterForm = ({ callback, isRemove = false }) => {
   const navigate = useNavigate();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
 
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [errors, setErrors] = useState({
-    email: null,
-    password: null
-  });
-  const [isError, setIsError] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [showModalSuccess, setShowModalSuccess] = useState(false);
   const [error, setError] = useState(null);
   const [successMessage, setSuccessMessage] = useState(null);
 
-  const onSubmit = (e) => {
-    e.preventDefault(); // Evitar el envío del formulario por defecto
-    // Aquí agregarías la lógica para enviar los datos del formulario a tu servidor
+  const onSubmit = async (form) => {
     setIsLoading(true);
-    setErrors({
-      email: null,
-      password: null
-    })
-      
-    if (email==="") {
-      setIsLoading(false);
-      setErrors({
-        ...errors,
-        email: "Por favor, ingrese su correo electrónico."
-      });
-      setIsError(true);
-      return;
-    }
 
-    if (password==="") {
-      setIsLoading(false);
-      setErrors({
-        ...errors,
-        password: "Por favor, ingrese su contraseña."
-      });
-      setIsError(true);
-      return;
-    }
-
-    // Validar el formulario
-
-    // Validar el formato del correo electrónico
-    const emailRegex = /^[a-zA-Z0-9._-]+@gmail.com$/; 
-    if (!emailRegex.test(email)) {
-      setIsLoading(false);
-      setErrors({
-        ...errors,
-        email: "El correo electrónico no tiene el formato correcto."
-      });
-      setIsError(true);
-      return;
-    }
-
-  // Validar la contraseña
-const passwordRegex = /^[0-9]{8,}$/;
-if (!passwordRegex.test(password)) {
-  setIsLoading(false);
-  setErrors({
-    ...errors,
-    password: "La contraseña debe ser de 8 dígitos y solo números."
-  });
-  setIsError(true);
-  return;
-}
-
-    // Enviar los datos del formulario al servidor
-    loginApiService.register({ email, password })
-      .subscribe((result) => {
-        setIsError(false);
-          setErrors({
-            email: null,
-            password: null
-        });
+    loginApiService.register(form).subscribe({
+      next: (data) => {
+        console.log(data)
+        // if (data.token) {
+        //   // localStorage.setItem("user", JSON.stringify(data));
+        //   // navigate("/dashboard");
+        // } else {
+        //   setShowModal(true);
+        //   setError(data);
+        // }
         setIsLoading(false);
-        if (result.status == 200) {
-         
-          
-          setSuccessMessage(result.message ?? "Se ah registrado con éxito!")
-          setShowModalSuccess(true);
-          // Mostrar el mensaje de registro exitoso
-          // Redirigir al usuario a la página de inicio de sesión
-          
-        } else{
-          setShowModal(true);
-          setError(result);
-        
-        }
-      });
+      },
+      error: (error) => {
+        setShowModal(true);
+        setError(error);
+        setIsLoading(false);
+      },
+    }) 
   };
   const onRemoveCallback = (value) => {
     callback("login");
@@ -110,50 +53,63 @@ if (!passwordRegex.test(password)) {
     setShowModal(false)
   }
 
-  const keypressErrorInput = (event) => {
-    setIsError(false);
-  }
+
 
   const closeSuccessModal = () => {
-    setEmail(null);
-    setPassword(null);
-    setErrors({
-      email: null,
-      password: null
-    });
     setShowModalSuccess(false);
   };
 
   return (
-    <form onSubmit={onSubmit} className={"w-1/2 " + (isRemove ? "remove" : "")}>
+    <form onSubmit={handleSubmit(onSubmit)} className={"w-1/2 " + (isRemove ? "remove" : "")}>
         <ModalErrorComponent show={showModal} title={"Error al registrar usuario"} message={error?.error ?? ""} callback={hiddenModal}/>
         <ModalInfoComponent show={showModalSuccess} title="Éxito" message={successMessage} callback={closeSuccessModal}/>
       <h1 className="text-gray-800 font-bold text-2xl mb-1"><center>Registrate!</center></h1>
       <p className="text-sm font-normal text-gray-600 mb-7">Bienvenido</p>
-    
+      <InputCustom
+        id="name_register"
+        name="name_register"
+        register={register("name", registerUser.name)}
+        isError={!!errors.name}
+        error={errors.name?.message}
+        icon="people"
+        placeholder="Nombre"
+        type="text"
+        disabled={isLoading}
+      />
+      <InputCustom
+        id="lastname_register"
+        name="lastname_register"
+        register={register("lastname", registerUser.lastname)}
+        isError={!!errors.lastname}
+        error={errors.lastname?.message}
+        icon="people"
+        placeholder="Apellido"
+        type="text"
+        disabled={isLoading}
+      />
       <InputCustom
         id="email_register"
-        placeholder="Correo Electrónico"
+        name="email_register"
+        register={register("email", registerUser.email)}
+        isError={!!errors.email}
+        error={errors.email?.message}
         icon="email"
-        value={email}
-        name="email"
-        onChanged={(e) => setEmail(e.target.value)}
-        error={errors.email}
-        isError={isError}
-        isLoading={isLoading}
-        onKeypress={keypressErrorInput}
+        placeholder="Correo electrónico"
+        type="email"
+        disabled={isLoading}
       />
       <InputCustom
         id="password_register"
-        placeholder="Contraseña"
+        name="password_register"
+        register={register("password", {
+          required: "Por favor, ingrese contraseña.",
+        })}
+        isError={!!errors.password}
+        error={errors.password?.message}
         icon="password"
-        value={password}
-        name="password"
-        onChanged={(e) => setPassword(e.target.value)}
-        error={errors.password}
-        isError={isError}
-        isLoading={isLoading}
-        onKeypress={keypressErrorInput}
+        placeholder="Contraseña"
+        type="password"
+        disabled={isLoading}
       />
       <div className="flex flex-col justify-center text-center">
             <ButtonCustom  isLoading={isLoading} type="submit" children="Registrarse"/>
